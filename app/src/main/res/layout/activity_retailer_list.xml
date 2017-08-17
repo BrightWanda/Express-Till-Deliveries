@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:gravity="center_horizontal" >
+
+    <ImageView android:id="@+id/app_icon"
+        android:src="@drawable/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView android:id="@+id/listHeader"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#2196F3"
+        android:layout_below="@id/app_icon"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="Choose Your Retailer" />
+
+    <RadioGroup android:id="@+id/radio_group"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listHeader"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/shoprite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shoprite"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/spar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spar"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/boxer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Boxer"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/checkers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Checkers"
+            android:onClick="onRadioButtonClicked"/>
+        <RadioButton android:id="@+id/pick_n_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick n Pay"
+            android:onClick="onRadioButtonClicked"/>
+    </RadioGroup>
+</RelativeLayout>

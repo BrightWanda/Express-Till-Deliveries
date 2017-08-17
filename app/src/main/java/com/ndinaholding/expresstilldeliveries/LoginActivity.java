@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void attemptLogin() {
 
-        Intent intent = new Intent(this, GroceryList .class);
+        Intent intent = new Intent(this, RetailerList.class);
         startActivity(intent);
 
         /*if (mAuthTask != null) {
