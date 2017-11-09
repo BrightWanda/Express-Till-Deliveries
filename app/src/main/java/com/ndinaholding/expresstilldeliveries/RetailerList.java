@@ -1,76 +1,116 @@
 package com.ndinaholding.expresstilldeliveries;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class RetailerList extends Activity {
+import com.ndinaholding.expresstilldeliveries.POJOs.Login;
+import com.ndinaholding.expresstilldeliveries.POJOs.Retailer;
+import com.ndinaholding.expresstilldeliveries.POJOs.Retailer_;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class RetailerList extends Activity implements AdapterView.OnItemSelectedListener {
 	// All static variables
 	ListView list;
     LazyAdapter adapter;
+
+	private ApiInterface apiInterface;
+	private ProgressBar spinner;
+	private Retailer retailerRes;
+    private RadioGroup rdGroup;
+	public static final String EXTRA_MESSAGE = "com.ndinaholding.expresstilldeliveries.MESSAGE";
+	private String apiKey;
+
+    // Declaring the String Array with the Text Data for the Spinners
+    String[] Languages = { "Select Your Retailer", "Boxer", "Checkers",
+            "Pick n Pay", "Shoprite" };
+    // Declaring the Integer Array with resourse Id's of Images for the Spinners
+    Integer[] images = { 0, R.drawable.boxer, R.drawable.checkers,
+            R.drawable.picknpay, R.drawable.shoprite };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_retailer_list);
 
-		String[] items = {"Bread", "Milk", "Eggs", "Sugar", "Soap"};
-/*
-		list= findViewById(R.id.list);
+        // Declaring and typecasting a Spinner
+        Spinner mySpinner = (Spinner) findViewById(R.id.retailer_spinner);
 
-		// Getting adapter by passing xml data ArrayList
-        adapter=new LazyAdapter(this,items);
-        list.setAdapter(adapter);
+        // Setting a Custom Adapter to the Spinner
 
-        // Click event for single list row
-        list.setOnItemClickListener(new OnItemClickListener() {
+        /*MyAdapter myAdapter = new MyAdapter(RetailerList.this, R.layout.custom,
+                Languages);
+        mySpinner.setAdapter(myAdapter);
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Intent intent = new Intent(getApplicationContext(), ItemDetails .class);
-				startActivity(intent);
-			}
-		});
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if(selectedItem.equals("Select a Retailer"))
+                {
 
-		Button proceed = (Button) findViewById(R.id.proceed);
-		proceed.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				Intent intent = new Intent(getApplicationContext(), Checkout .class);
-				startActivity(intent);
-			}
-		});*/
-	}
+                }
+                else {
+                    ///Intent intent = new Intent(getApplicationContext(), GroceryList.class);
+                    //startActivity(intent);
+                }
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent)
+            {
 
-	public void onRadioButtonClicked(View view) {
-		// Is the button now checked?
-		boolean checked = ((RadioButton) view).isChecked();
-		Intent intent = new Intent(getApplicationContext(), GroceryList.class);
+            }
+        });*/
+    }
 
-		// Check which radio button was clicked
-		switch(view.getId()) {
-			case R.id.shoprite:
-				startActivity(intent);
-				break;
-			case R.id.checkers:
-				startActivity(intent);
-				break;
-            case R.id.boxer:
-                startActivity(intent);
-                break;
-            case R.id.spar:
-                startActivity(intent);
-                break;
-            case R.id.pick_n_pay:
-                startActivity(intent);
-                break;
-		}
-	}
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // Creating an Adapter Class
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+
 }

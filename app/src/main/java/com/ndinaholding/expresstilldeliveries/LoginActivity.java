@@ -3,7 +3,10 @@ package com.ndinaholding.expresstilldeliveries;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,10 +32,19 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ndinaholding.expresstilldeliveries.POJOs.Login;
+import com.ndinaholding.expresstilldeliveries.POJOs.Register;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -64,6 +76,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private Button btnLinkToRegister;
+    private ApiInterface apiInterface;
+    private Login loginResponse;
+    private ProgressBar spinner;
+    private ProgressDialog pd;
+
+    public static final String apiKey = "apiKey";
+    public static final String MySession = "MySession";
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        pd = new ProgressDialog(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -164,10 +186,54 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void attemptLogin() {
 
-        Intent intent = new Intent(this, RetailerList.class);
+        spinner=(ProgressBar)findViewById(R.id.login_progress);
+        spinner.setVisibility(View.GONE);
+
+        TextView textViewEmail = (TextView) findViewById(R.id.email);
+        TextView textViewPassword = (TextView) findViewById(R.id.password);
+
+        pd.setMessage("loading");
+        pd.show();
+
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+        Call<Login> call = apiInterface.sendLogin(textViewEmail.getText().toString(), textViewPassword.getText().toString());
+
+        call.enqueue(new Callback<Login>(){
+            @Override
+            public void onResponse(Call<Login> call, Response<Login> response) {
+                pd.dismiss();
+                loginResponse = response.body();
+                if(loginResponse != null) {
+                    if(loginResponse.getError())
+                    {
+                        Toast.makeText(getApplicationContext(), loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        sharedpreferences = getSharedPreferences(MySession, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString(apiKey, loginResponse.getApiKey());
+                        editor.commit();
+
+                        Intent intent = new Intent(getApplicationContext(), MainNavActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Login> call, Throwable t) {
+                pd.dismiss();
+                Toast.makeText(getApplicationContext(), t.toString()+" 234", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+        /*Intent intent = new Intent(this, RetailerList.class);
         startActivity(intent);
 
-        /*if (mAuthTask != null) {
+        if (mAuthTask != null) {
             return;
         }
 
@@ -210,8 +276,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
-        }*/
-    }
+        }
+    }*/
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

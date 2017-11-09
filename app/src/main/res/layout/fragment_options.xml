@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center_horizontal" >
+
+    <LinearLayout
+        android:id="@+id/listHeader"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#213572"
+        android:layout_height="50dp">
+
+        <TextView android:id="@+id/txtCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:gravity="center_vertical|right"
+            android:textSize="20dp"
+            android:text="Total: R0.00    " />
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listHeader"
+        android:paddingLeft="50dp"
+        android:paddingTop="20dp"
+        android:gravity="center_vertical"
+        android:id="@+id/myRadioGroup" >
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#213572"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:id="@+id/promotions"
+            android:text="Promotions" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#213572"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:id="@+id/specials"
+            android:text="Specials" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#213572"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:id="@+id/sales"
+            android:text="Sales" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#213572"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:id="@+id/myList"
+            android:text="My List" />
+    </RadioGroup>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:background="#213572"
+            android:textSize="15dp"
+            android:text="Home"/>
+    </RelativeLayout>
+</RelativeLayout>

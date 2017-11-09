@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp" >
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:src="@drawable/clothing"
+        android:scaleType="centerInside"
+        />
+
+    <TextView
+        android:id="@+id/txtHeader"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/imageButton"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:text="Fashion"
+        />
+</RelativeLayout>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/listHeader"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="50dp">
+
+        <TextView android:id="@+id/txtCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:background="#213572"
+            android:layout_weight="14"
+            android:gravity="center_vertical|right"
+            android:textSize="20dp"
+            android:text="Total: R0.00" />
+
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:background="#213572"
+            android:text="Checkout"/>
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/gridFrame"
+        android:layout_below="@+id/listHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="com.ndinaholding.expresstilldeliveries.fragment.SpecialsFragment">
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:background="#FFFFFF"
+            android:padding="10dp"
+            android:gravity="center"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/btnContinue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:background="#213572"
+            android:textSize="15dp"
+            android:text="Continue Shopping"/>
+    </RelativeLayout>
+</RelativeLayout>

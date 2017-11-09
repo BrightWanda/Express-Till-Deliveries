@@ -25,18 +25,29 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ImageLoader {
-    
+
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
-    ExecutorService executorService; 
-    
+    ExecutorService executorService;
+    final int stub_id = R.drawable.no_image;
+
+    public ImageLoader(){
+
+    }
+
+    public void DisplayImage(ImageView imageView)
+    {
+        //queuePhoto(url, imageView);
+        imageView.setImageResource(stub_id);
+    }
+
+
     public ImageLoader(Context context){
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
-    
-    final int stub_id = R.drawable.no_image;
+
     public void DisplayImage(Context context, String img, ImageView imageView)
     {
 
@@ -44,7 +55,7 @@ public class ImageLoader {
 
         img = img.toLowerCase();
 
-        if(img.equals("eggs"))
+        if(img.equals("eggs") || img.equals("albany") || img.equals("koo") || img.equals("hullet"))
         {
             img = img + ".jpg";
         }
@@ -82,22 +93,22 @@ public class ImageLoader {
 
         //imageView.setImageResource(img);
     }
-        
+
     private void queuePhoto(String url, ImageView imageView)
     {
         PhotoToLoad p=new PhotoToLoad(url, imageView);
         executorService.submit(new PhotosLoader(p));
     }
-    
-    private Bitmap getBitmap(String url) 
+
+    private Bitmap getBitmap(String url)
     {
         File f=fileCache.getFile(url);
-        
+
         //from SD cache
         Bitmap b = decodeFile(f);
         if(b!=null)
             return b;
-        
+
         //from web
         try {
             Bitmap bitmap=null;
@@ -125,7 +136,7 @@ public class ImageLoader {
             BitmapFactory.Options o = new BitmapFactory.Options();
             o.inJustDecodeBounds = true;
             BitmapFactory.decodeStream(new FileInputStream(f),null,o);
-            
+
             //Find the correct scale value. It should be the power of 2.
             final int REQUIRED_SIZE=70;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
@@ -137,7 +148,7 @@ public class ImageLoader {
                 height_tmp/=2;
                 scale*=2;
             }
-            
+
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
             o2.inSampleSize=scale;
@@ -145,24 +156,24 @@ public class ImageLoader {
         } catch (FileNotFoundException e) {}
         return null;
     }
-    
+
     //Task for the queue
     private class PhotoToLoad
     {
         public String url;
         public ImageView imageView;
         public PhotoToLoad(String u, ImageView i){
-            url=u; 
+            url=u;
             imageView=i;
         }
     }
-    
+
     class PhotosLoader implements Runnable {
         PhotoToLoad photoToLoad;
         PhotosLoader(PhotoToLoad photoToLoad){
             this.photoToLoad=photoToLoad;
         }
-        
+
         @Override
         public void run() {
             if(imageViewReused(photoToLoad))
@@ -176,14 +187,14 @@ public class ImageLoader {
             a.runOnUiThread(bd);
         }
     }
-    
+
     boolean imageViewReused(PhotoToLoad photoToLoad){
         String tag=imageViews.get(photoToLoad.imageView);
         if(tag==null || !tag.equals(photoToLoad.url))
             return true;
         return false;
     }
-    
+
     //Used to display bitmap in the UI thread
     class BitmapDisplayer implements Runnable
     {

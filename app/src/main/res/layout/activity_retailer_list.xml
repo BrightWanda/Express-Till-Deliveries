@@ -6,6 +6,14 @@
     android:paddingRight="15dp"
     android:gravity="center_horizontal" >
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
     <ImageView android:id="@+id/app_icon"
         android:src="@drawable/logo"
         android:layout_width="match_parent"
@@ -14,42 +22,27 @@
     <TextView android:id="@+id/listHeader"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#2196F3"
         android:layout_below="@id/app_icon"
         android:textColor="#FFFFFF"
         android:gravity="center"
         android:textSize="20dp"
-        android:text="Choose Your Retailer" />
+        android:text="" />
 
-    <RadioGroup android:id="@+id/radio_group"
-        android:layout_width="fill_parent"
+    <!-- Text Label -->
+    <TextView
+        android:id="@+id/ddpHeader"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/listHeader"
-        android:orientation="vertical">
-        <RadioButton android:id="@+id/shoprite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shoprite"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/spar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Spar"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/boxer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Boxer"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/checkers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Checkers"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/pick_n_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pick n Pay"
-            android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
+        android:layout_marginTop="10dip"
+        android:text=""
+        android:layout_marginBottom="5dp"
+        />
+
+    <Spinner
+        android:id="@+id/retailer_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ddpHeader"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>

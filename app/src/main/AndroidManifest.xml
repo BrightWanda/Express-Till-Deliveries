@@ -33,7 +33,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyBTnHqLsQymR0ij1RSBx6RIo9hGK2GHPDE" />
 
         <activity
             android:name=".LoginActivity"
@@ -53,7 +53,6 @@
         <activity
             android:name=".GroceryList"
             android:label="@string/app_name" />
-
         <activity android:name=".ItemDetails" />
         <activity android:name=".Checkout" />
         <!--
@@ -64,13 +63,16 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".Promotions" />
+        <activity android:name=".Specials" />
+        <activity
+            android:name=".MainNavActivity"
+            android:label="@string/title_activity_main_nav"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

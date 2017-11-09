@@ -3,8 +3,11 @@ package com.ndinaholding.expresstilldeliveries;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.ProgressDialog;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -26,10 +29,19 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.ndinaholding.expresstilldeliveries.POJOs.Login;
+import com.ndinaholding.expresstilldeliveries.POJOs.Register;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -61,6 +73,12 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
     private View mProgressView;
     private View mLoginFormView;
     private Button btnLinkToLogin;
+    private Register regResponse;
+    private ProgressBar spinner;
+
+    private ApiInterface apiInterface;
+
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +87,7 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        pd = new ProgressDialog(this);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -78,7 +97,7 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptRegister();
                     return true;
                 }
                 return false;
@@ -89,7 +108,7 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptRegister();
             }
         });
 
@@ -152,61 +171,56 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptRegister() {
 
-        Intent intent = new Intent(this, RetailerList.class);
-        startActivity(intent);
+        spinner=(ProgressBar)findViewById(R.id.login_progress);
+        spinner.setVisibility(View.GONE);
 
-        /*if (mAuthTask != null) {
-            return;
+        TextView textViewEmail = (TextView) findViewById(R.id.email);
+        TextView textViewConfPassword = (TextView) findViewById(R.id.confPassword);
+        TextView textViewPassword = (TextView) findViewById(R.id.password);
+        TextView textViewCellphone = (TextView) findViewById(R.id.cellphone);
+
+        if(textViewConfPassword.getText().toString().equals(textViewPassword.getText().toString()))
+        {
+            apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+
+            pd.setMessage("loading");
+            pd.show();
+
+            Call<Register> call = apiInterface.sendRegister(textViewEmail.getText().toString(), textViewCellphone.getText().toString(), textViewPassword.getText().toString());
+
+            call.enqueue(new Callback<Register>(){
+                @Override
+                public void onResponse(Call<Register> call, Response<Register> response) {
+                    regResponse = response.body();
+                    pd.dismiss();
+                    if(regResponse != null) {
+                        if(regResponse.getError())
+                        {
+                            Toast.makeText(getApplicationContext(), regResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Account Registered successfully.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Register> call, Throwable t) {
+                    pd.dismiss();
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }*/
     }
 
     private boolean isEmailValid(String email) {

@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LazyAdapter extends BaseAdapter {
-    
+
     private Activity activity;
     private String [] items;
     private static LayoutInflater inflater=null;
-    public ImageLoader imageLoader; 
-    
+    public ImageLoader imageLoader;
+
     public LazyAdapter(Activity a, String[] d) {
         this.activity = a;
         this.items = d;
@@ -34,7 +34,7 @@ public class LazyAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    
+
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
         if(convertView==null)
@@ -46,7 +46,7 @@ public class LazyAdapter extends BaseAdapter {
         ImageView thumb_image= vi.findViewById(R.id.list_image); // thumb image
 
         String item = items[position];
-        
+
         // Setting all values in listview
         title.setText(item);
         artist.setText("");
